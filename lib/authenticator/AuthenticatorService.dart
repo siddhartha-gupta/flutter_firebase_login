@@ -108,10 +108,11 @@ class AuthenticatorService {
     }
   }
 
-  static Future<dynamic> signInWithTwitter() async {
+  static Future<dynamic> signInWithTwitter(
+      String consumerKey, String consumerSecret) async {
     twitterLogin = new TwitterLogin(
-      consumerKey: AuthenticatorStore.getTwitterConsumerKey(),
-      consumerSecret: AuthenticatorStore.getTwitterConsumerSecret(),
+      consumerKey: consumerKey,
+      consumerSecret: consumerSecret,
     );
 
     TwitterSession currentSession = await twitterLogin.currentSession;

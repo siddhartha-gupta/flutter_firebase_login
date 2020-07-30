@@ -36,10 +36,7 @@ class LoginPageState extends State<LoginPage> {
     super.initState();
 
     SharedPreferencesService.isReady().then((onValue) {
-      AuthenticatorStore.initialize(
-        widget.twitterConsumerKey,
-        widget.twitterConsumerSecret,
-      );
+      AuthenticatorStore.initialize();
       _checkLogin();
     });
   }
@@ -90,7 +87,10 @@ class LoginPageState extends State<LoginPage> {
 
   _twitterLogin() {
     if (_proceedLogin()) {
-      AuthenticatorService.signInWithTwitter().then((result) {
+      AuthenticatorService.signInWithTwitter(
+        widget.twitterConsumerKey,
+        widget.twitterConsumerSecret,
+      ).then((result) {
         if (result == 'LoggedIn') {
           _onLoginSuccess('twitter');
         } else {
@@ -176,40 +176,44 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: new Builder(builder: (BuildContext context) {
-      return _loginInProgress
-          ? new LoadingIndicator()
-          : new Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  if (widget.googleEnabled)
-                    ..._loginButton(
-                      'Google',
-                      'assets/images/google.png',
-                      Color.fromRGBO(68, 68, 76, .8),
-                      Colors.white,
-                      _googleLogin,
-                    ),
-                  if (widget.facebookEnabled)
-                    ..._loginButton(
-                      'Facebook',
-                      'assets/images/facebook.png',
-                      Colors.white,
-                      Color.fromRGBO(58, 89, 152, 1.0),
-                      _facebookLogin,
-                    ),
-                  if (widget.twitterEnabled)
-                    ..._loginButton(
-                      'Twitter',
-                      'assets/images/twitter.png',
-                      Colors.white,
-                      Color.fromRGBO(56, 161, 243, 1.0),
-                      _twitterLogin,
-                    ),
-                ],
-              ),
-            );
-    }));
+    return new Scaffold(
+      body: new Builder(
+        builder: (BuildContext context) {
+          return _loginInProgress
+              ? new LoadingIndicator()
+              : new Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      if (widget.googleEnabled)
+                        ..._loginButton(
+                          'Google',
+                          'assets/images/google.png',
+                          Color.fromRGBO(68, 68, 76, .8),
+                          Colors.white,
+                          _googleLogin,
+                        ),
+                      if (widget.facebookEnabled)
+                        ..._loginButton(
+                          'Facebook',
+                          'assets/images/facebook.png',
+                          Colors.white,
+                          Color.fromRGBO(58, 89, 152, 1.0),
+                          _facebookLogin,
+                        ),
+                      if (widget.twitterEnabled)
+                        ..._loginButton(
+                          'Twitter',
+                          'assets/images/twitter.png',
+                          Colors.white,
+                          Color.fromRGBO(56, 161, 243, 1.0),
+                          _twitterLogin,
+                        ),
+                    ],
+                  ),
+                );
+        },
+      ),
+    );
   }
 }
