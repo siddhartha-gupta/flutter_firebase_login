@@ -37,9 +37,6 @@ class LoginPageState extends State<LoginPage> {
 
     SharedPreferencesService.isReady().then((onValue) {
       AuthenticatorStore.initialize(
-        widget.googleEnabled,
-        widget.facebookEnabled,
-        widget.twitterEnabled,
         widget.twitterConsumerKey,
         widget.twitterConsumerSecret,
       );
@@ -48,8 +45,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _checkLogin() async {
-    final String loginState =
-        (SharedPreferencesService.getString('loginState') ?? null);
+    final String loginState = AuthenticatorStore.getAuthType();
 
     switch (loginState) {
       case 'googleplus':
@@ -129,6 +125,7 @@ class LoginPageState extends State<LoginPage> {
     setState(() {
       _loginInProgress = false;
     });
+    AuthenticatorStore.setAuthType(loginType);
   }
 
   _onLoginError(String msg) {
@@ -141,32 +138,40 @@ class LoginPageState extends State<LoginPage> {
     widget.loginError();
   }
 
-  Widget _loginButton(title, uri,
-      [color = const Color.fromRGBO(68, 68, 76, .8)]) {
-    return Container(
-      width: 200.0,
-      child: Center(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              uri,
-              width: 25.0,
-            ),
-            Padding(
-              child: Text(
-                "Sign in with $title",
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  color: color,
-                ),
+  List<Widget> _loginButton(title, icon, textColor, buttonColor, callback) {
+    List<Widget> widgets = new List();
+
+    widgets.add(new RaisedButton(
+      child: Container(
+        width: 200.0,
+        child: Center(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                icon,
+                width: 25.0,
               ),
-              padding: new EdgeInsets.only(left: 15.0),
-            ),
-          ],
+              Padding(
+                child: Text(
+                  "Sign in with $title",
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: textColor,
+                  ),
+                ),
+                padding: new EdgeInsets.only(left: 15.0),
+              ),
+            ],
+          ),
         ),
       ),
-    );
+      onPressed: callback,
+      color: buttonColor,
+    ));
+    widgets.add(new Padding(padding: EdgeInsets.all(10.0)));
+
+    return widgets;
   }
 
   @override
@@ -178,25 +183,30 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new RaisedButton(
-                    child: _loginButton('Google', 'assets/images/google.png'),
-                    onPressed: _googleLogin,
-                    color: Colors.white,
-                  ),
-                  Padding(padding: EdgeInsets.all(10.0)),
-                  new RaisedButton(
-                    child: _loginButton(
-                        'Facebook', 'assets/images/facebook.png', Colors.white),
-                    onPressed: _facebookLogin,
-                    color: Color.fromRGBO(58, 89, 152, 1.0),
-                  ),
-                  Padding(padding: EdgeInsets.all(10.0)),
-                  new RaisedButton(
-                    child: _loginButton(
-                        'Twitter', 'assets/images/twitter.png', Colors.white),
-                    onPressed: _twitterLogin,
-                    color: Color.fromRGBO(56, 161, 243, 1.0),
-                  ),
+                  if (widget.googleEnabled)
+                    ..._loginButton(
+                      'Google',
+                      'assets/images/google.png',
+                      Color.fromRGBO(68, 68, 76, .8),
+                      Colors.white,
+                      _googleLogin,
+                    ),
+                  if (widget.facebookEnabled)
+                    ..._loginButton(
+                      'Facebook',
+                      'assets/images/facebook.png',
+                      Colors.white,
+                      Color.fromRGBO(58, 89, 152, 1.0),
+                      _facebookLogin,
+                    ),
+                  if (widget.twitterEnabled)
+                    ..._loginButton(
+                      'Twitter',
+                      'assets/images/twitter.png',
+                      Colors.white,
+                      Color.fromRGBO(56, 161, 243, 1.0),
+                      _twitterLogin,
+                    ),
                 ],
               ),
             );

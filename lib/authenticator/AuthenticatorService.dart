@@ -172,8 +172,7 @@ class AuthenticatorService {
   }
 
   static Future<Null> signOut() async {
-    final String loginState =
-        (SharedPreferencesService.getString('loginState') ?? null);
+    final String loginState = AuthenticatorStore.getAuthType();
 
     print('loginState: ' + loginState);
     switch (loginState) {
@@ -190,6 +189,7 @@ class AuthenticatorService {
         break;
     }
     SharedPreferencesService.deleteItem('loginState');
+    AuthenticatorStore.setAuthType('');
   }
 
   static Future<Null> signOutFromGoogle() async {
