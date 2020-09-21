@@ -18,6 +18,10 @@ class AuthenticatorService {
     AuthenticatorStore.initialize();
   }
 
+  static String userId() {
+    return _firebaseUser.uid;
+  }
+
   static String getAuthType() {
     return AuthenticatorStore.getAuthType();
   }
