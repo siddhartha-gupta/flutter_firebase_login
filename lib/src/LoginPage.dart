@@ -121,11 +121,12 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _onLoginSuccess(final String loginType) {
-    widget.loginComplete();
     setState(() {
       _loginInProgress = false;
     });
     AuthenticatorStore.setAuthType(loginType);
+
+    widget.loginComplete();
   }
 
   _onLoginError(String msg) {

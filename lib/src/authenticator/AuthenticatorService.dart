@@ -172,7 +172,7 @@ class AuthenticatorService {
     }
   }
 
-  static Future<Null> signOut() async {
+  static Future<Null> signOut(Function callback) async {
     final String loginState = AuthenticatorStore.getAuthType();
 
     print('loginState: ' + loginState);
@@ -191,6 +191,10 @@ class AuthenticatorService {
     }
     SharedPreferencesService.deleteItem('loginState');
     AuthenticatorStore.setAuthType('');
+
+    if(callback) {
+      callback();
+    }
   }
 
   static Future<Null> signOutFromGoogle() async {
@@ -206,6 +210,14 @@ class AuthenticatorService {
   static Future<Null> signOutFromTwitter() async {
     await _auth.signOut();
     await twitterLogin.logOut();
+  }
+
+  static Future<void> deleteUser(Function callback) async {
+    await _firebaseUser.delete();
+
+    if(callback) {
+      callback();
+    }
   }
 }
 
