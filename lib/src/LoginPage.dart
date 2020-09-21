@@ -42,6 +42,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _checkLogin() async {
+    print('check login');
+
     final String loginState = AuthService.getAuthType();
 
     print('check login, loginState: ' + loginState);
