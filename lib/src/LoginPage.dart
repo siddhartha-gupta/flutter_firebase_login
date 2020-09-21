@@ -65,7 +65,7 @@ class LoginPageState extends State<LoginPage> {
         _onLoginSuccess('googleplus');
       }).catchError((e) {
         print('error' + e.toString());
-        _onLoginError('Oops! There was a error, please try again');
+        _onLoginError(e, 'Oops! There was a error, please try again');
       });
     }
   }
@@ -79,7 +79,7 @@ class LoginPageState extends State<LoginPage> {
           _onLoginError(result);
         }
       }).catchError((e) {
-        _onLoginError('Oops! There was a error, please try again');
+        _onLoginError(e, 'Oops! There was a error, please try again');
       });
     }
   }
@@ -93,10 +93,10 @@ class LoginPageState extends State<LoginPage> {
         if (result == 'LoggedIn') {
           _onLoginSuccess('twitter');
         } else {
-          _onLoginError(result);
+          _onLoginError(e, result);
         }
       }).catchError((e) {
-        _onLoginError(e);
+        _onLoginError(e, 'Oops! There was a error, please try again');
       });
     }
   }
@@ -126,14 +126,14 @@ class LoginPageState extends State<LoginPage> {
     widget.loginComplete(loginType);
   }
 
-  _onLoginError(String msg) {
-    print('error while logging');
+  _onLoginError(dynamic error, String msg) {
+    print('error while logging: ' + msg);
 
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(msg)));
     setState(() {
       _loginInProgress = false;
     });
-    widget.loginError();
+    widget.loginError(error);
   }
 
   List<Widget> _loginButton(title, icon, textColor, buttonColor, callback) {
