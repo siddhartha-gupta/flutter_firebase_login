@@ -76,7 +76,7 @@ class LoginPageState extends State<LoginPage> {
         if (result == 'LoggedIn') {
           _onLoginSuccess('facebook');
         } else {
-          _onLoginError(result);
+          _onLoginError(result, 'Oops! There was a error, please try again');
         }
       }).catchError((e) {
         _onLoginError(e, 'Oops! There was a error, please try again');
@@ -93,7 +93,7 @@ class LoginPageState extends State<LoginPage> {
         if (result == 'LoggedIn') {
           _onLoginSuccess('twitter');
         } else {
-          _onLoginError(e, result);
+          _onLoginError(result, 'Oops! There was a error, please try again');
         }
       }).catchError((e) {
         _onLoginError(e, 'Oops! There was a error, please try again');
