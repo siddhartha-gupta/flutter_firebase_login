@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
-import 'package:flutter_firebase_login/authenticator/AuthenticatorStore.dart';
 import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
+import 'package:flutter_firebase_login/src/authenticator/AuthenticatorService.dart';
+import 'package:flutter_firebase_login/src/authenticator/AuthenticatorStore.dart';
 
 class LoginPage extends StatefulWidget {
   final bool googleEnabled;
