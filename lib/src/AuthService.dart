@@ -10,7 +10,7 @@ class AuthService {
   }
 
   static String userId() {
-    return AuthenticationService._firebaseUser.uid;
+    return AuthenticatorService._firebaseUser.uid;
   }
 
   static Future<dynamic> signInWithGoogle() async {
