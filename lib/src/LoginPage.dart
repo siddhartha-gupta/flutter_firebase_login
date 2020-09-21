@@ -120,6 +120,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _onLoginSuccess(final String loginType) {
+    print('_onLoginSuccess: ' + loginType);
     setState(() {
       _loginInProgress = false;
     });
