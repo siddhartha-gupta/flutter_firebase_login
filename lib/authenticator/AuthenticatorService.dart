@@ -1,4 +1,3 @@
-import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
@@ -209,7 +208,6 @@ class AuthenticatorService {
         await signOutFromTwitter();
         break;
     }
-    SharedPreferencesService.deleteItem('loginState');
     AuthenticatorStore.setAuthType('');
 
     if (callback != null) {
