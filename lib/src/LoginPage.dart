@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
-import 'package:flutter_firebase_login/src/authenticator/AuthenticatorService.dart';
-import 'package:flutter_firebase_login/src/authenticator/AuthenticatorStore.dart';
+import 'package:flutter_firebase_login/src/AuthService.dart';
 
 class LoginPage extends StatefulWidget {
   final bool googleEnabled;
@@ -36,13 +35,13 @@ class LoginPageState extends State<LoginPage> {
     super.initState();
 
     SharedPreferencesService.isReady().then((onValue) {
-      AuthenticatorStore.initialize();
+      AuthService.initialize();
       _checkLogin();
     });
   }
 
   _checkLogin() async {
-    final String loginState = AuthenticatorStore.getAuthType();
+    final String loginState = AuthService.getAuthType();
 
     switch (loginState) {
       case 'googleplus':
@@ -61,7 +60,7 @@ class LoginPageState extends State<LoginPage> {
 
   _googleLogin() {
     if (_proceedLogin()) {
-      AuthenticatorService.signInWithGoogle().then((user) {
+      AuthService.signInWithGoogle().then((user) {
         print('googleplus');
         _onLoginSuccess('googleplus');
       }).catchError((e) {
@@ -73,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
 
   _facebookLogin() {
     if (_proceedLogin()) {
-      AuthenticatorService.signInWithFacebook().then((result) {
+      AuthService.signInWithFacebook().then((result) {
         if (result == 'LoggedIn') {
           _onLoginSuccess('facebook');
         } else {
@@ -87,7 +86,7 @@ class LoginPageState extends State<LoginPage> {
 
   _twitterLogin() {
     if (_proceedLogin()) {
-      AuthenticatorService.signInWithTwitter(
+      AuthService.signInWithTwitter(
         widget.twitterConsumerKey,
         widget.twitterConsumerSecret,
       ).then((result) {
@@ -124,9 +123,7 @@ class LoginPageState extends State<LoginPage> {
     setState(() {
       _loginInProgress = false;
     });
-    AuthenticatorStore.setAuthType(loginType);
-
-    widget.loginComplete();
+    widget.loginComplete(loginType);
   }
 
   _onLoginError(String msg) {

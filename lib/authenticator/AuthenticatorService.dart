@@ -14,7 +14,15 @@ class AuthenticatorService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static FirebaseUser _firebaseUser;
 
-  static Future<FirebaseUser> signInWithGoogle() async {
+  static void initialize() {
+    AuthenticatorStore.initialize();
+  }
+
+  static String getAuthType() {
+    return AuthenticatorStore.getAuthType();
+  }
+
+  static Future<dynamic> signInWithGoogle() async {
     // Attempt to get the currently authenticated user
 
     GoogleSignInAccount currentUser = _googleSignIn.currentUser;
@@ -40,6 +48,8 @@ class AuthenticatorService {
 
     _firebaseUser = (await _auth.signInWithCredential(credential)).user;
     print("signed in " + _firebaseUser.displayName);
+
+    AuthenticatorStore.setAuthType('googleplus');
 
     return _firebaseUser;
   }
@@ -72,6 +82,8 @@ class AuthenticatorService {
           final result = await firebaseFacebookAuth(new CustomFacebookSession(
             token: accessToken.token,
           ));
+          AuthenticatorStore.setAuthType('facebook');
+
           return result;
           break;
 
@@ -122,6 +134,8 @@ class AuthenticatorService {
         token: currentSession?.token ?? '',
         secret: currentSession?.secret ?? '',
       ));
+      AuthenticatorStore.setAuthType('twitter');
+
       return result;
     } else {
       final TwitterLoginResult authResult = await twitterLogin.authorize();
@@ -134,6 +148,8 @@ class AuthenticatorService {
             token: session?.token ?? '',
             secret: session?.secret ?? '',
           ));
+          AuthenticatorStore.setAuthType('twitter');
+
           return result;
 
         case TwitterLoginStatus.cancelledByUser:
@@ -192,7 +208,7 @@ class AuthenticatorService {
     SharedPreferencesService.deleteItem('loginState');
     AuthenticatorStore.setAuthType('');
 
-    if(callback) {
+    if (callback != null) {
       callback();
     }
   }
@@ -215,7 +231,7 @@ class AuthenticatorService {
   static Future<void> deleteUser(Function callback) async {
     await _firebaseUser.delete();
 
-    if(callback) {
+    if (callback != null) {
       callback();
     }
   }
