@@ -35,6 +35,7 @@ class LoginPageState extends State<LoginPage> {
     super.initState();
 
     SharedPreferencesService.isReady().then((onValue) {
+      print('SharedPreferencesService is ready');
       AuthService.initialize();
       _checkLogin();
     });
@@ -43,6 +44,8 @@ class LoginPageState extends State<LoginPage> {
   _checkLogin() async {
     final String loginState = AuthService.getAuthType();
 
+    print('check login, loginState: ' + loginState);
+    
     switch (loginState) {
       case 'googleplus':
         _googleLogin();
@@ -59,6 +62,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _googleLogin() {
+    print('_googleLogin');
+
     if (_proceedLogin()) {
       AuthService.signInWithGoogle().then((user) {
         print('googleplus');
@@ -71,6 +76,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _facebookLogin() {
+    print('_facebookLogin');
+
     if (_proceedLogin()) {
       AuthService.signInWithFacebook().then((result) {
         if (result == 'LoggedIn') {
@@ -85,6 +92,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _twitterLogin() {
+    print('_twitterLogin');
+
     if (_proceedLogin()) {
       AuthService.signInWithTwitter(
         widget.twitterConsumerKey,
