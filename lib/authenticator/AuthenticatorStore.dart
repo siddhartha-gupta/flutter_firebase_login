@@ -18,9 +18,9 @@ class AuthenticatorStore {
     if (authType == '') {
       SharedPreferencesService.deleteItem('loginState');
     } else {
-      _authType = authType;
       SharedPreferencesService.setString('loginState', authType);
     }
+    _authType = authType;
   }
 
   static String getAuthType() {
