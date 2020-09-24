@@ -1,8 +1,17 @@
 import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
+import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
 
 class AuthService {
-  static void initialize() {
-    AuthenticatorService.initialize();
+  static Future<bool> initialize(
+    String twitterConsumerKey,
+    String twitterConsumerSecret,
+  ) async {
+    await SharedPreferencesService.isReady();
+    print('SharedPreferencesService is ready');
+
+    AuthenticatorService.initialize(twitterConsumerKey, twitterConsumerSecret);
+
+    return AuthenticatorService.checkLogin();
   }
 
   static String getAuthType() {
@@ -21,9 +30,8 @@ class AuthService {
     return AuthenticatorService.signInWithFacebook();
   }
 
-  static Future<dynamic> signInWithTwitter(
-      String consumerKey, String consumerSecret) async {
-    return AuthenticatorService.signInWithTwitter(consumerKey, consumerSecret);
+  static Future<dynamic> signInWithTwitter() async {
+    return AuthenticatorService.signInWithTwitter();
   }
 
   static Future<Null> signOut(Function callback) async {

@@ -2,9 +2,16 @@ import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
 
 class AuthenticatorStore {
   static String _authType;
+  static String twitterConsumerKey;
+  static String twitterConsumerSecret;
 
-  static void initialize() {
+  static void initialize(
+    String twitterConsumerKey,
+    String twitterConsumerSecret,
+  ) {
     setAuthType(SharedPreferencesService.getString('loginState') ?? null);
+    AuthenticatorStore.twitterConsumerKey = twitterConsumerKey;
+    AuthenticatorStore.twitterConsumerSecret = twitterConsumerSecret;
   }
 
   static void setAuthType(final String authType) {

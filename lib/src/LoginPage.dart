@@ -6,8 +6,6 @@ class LoginPage extends StatefulWidget {
   final bool googleEnabled;
   final bool facebookEnabled;
   final bool twitterEnabled;
-  final String twitterConsumerKey;
-  final String twitterConsumerSecret;
 
   final Function loginComplete;
   final Function loginError;
@@ -17,8 +15,6 @@ class LoginPage extends StatefulWidget {
     @required this.googleEnabled,
     @required this.facebookEnabled,
     @required this.twitterEnabled,
-    @required this.twitterConsumerKey,
-    @required this.twitterConsumerSecret,
     @required this.loginComplete,
     @required this.loginError,
   }) : super(key: key);
@@ -33,42 +29,11 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
-    SharedPreferencesService.isReady().then((onValue) {
-      print('SharedPreferencesService is ready');
-      AuthService.initialize();
-      _checkLogin();
-    });
-  }
-
-  _checkLogin() async {
-    print('check login');
-
-    final String loginState = AuthService.getAuthType();
-
-    print('check login, loginState: ' + loginState);
-    
-    switch (loginState) {
-      case 'googleplus':
-        _googleLogin();
-        break;
-
-      case 'facebook':
-        _facebookLogin();
-        break;
-
-      case 'twitter':
-        _twitterLogin();
-        break;
-    }
   }
 
   _googleLogin() {
-    print('_googleLogin');
-
     if (_proceedLogin()) {
       AuthService.signInWithGoogle().then((user) {
-        print('googleplus');
         _onLoginSuccess('googleplus');
       }).catchError((e) {
         print('error' + e.toString());
@@ -78,8 +43,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _facebookLogin() {
-    print('_facebookLogin');
-
     if (_proceedLogin()) {
       AuthService.signInWithFacebook().then((result) {
         if (result == 'LoggedIn') {
@@ -94,13 +57,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   _twitterLogin() {
-    print('_twitterLogin');
-
     if (_proceedLogin()) {
-      AuthService.signInWithTwitter(
-        widget.twitterConsumerKey,
-        widget.twitterConsumerSecret,
-      ).then((result) {
+      AuthService.signInWithTwitter().then((result) {
         if (result == 'LoggedIn') {
           _onLoginSuccess('twitter');
         } else {
@@ -132,6 +90,7 @@ class LoginPageState extends State<LoginPage> {
 
   _onLoginSuccess(final String loginType) {
     print('_onLoginSuccess: ' + loginType);
+
     widget.loginComplete(loginType);
   }
 

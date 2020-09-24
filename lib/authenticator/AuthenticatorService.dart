@@ -13,8 +13,34 @@ class AuthenticatorService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static FirebaseUser _firebaseUser;
 
-  static void initialize() {
-    AuthenticatorStore.initialize();
+  static void initialize(
+    String twitterConsumerKey,
+    String twitterConsumerSecret,
+  ) {
+    AuthenticatorStore.initialize(twitterConsumerKey, twitterConsumerSecret);
+  }
+
+  static Future<bool> checkLogin() async {
+    final String loginState = getAuthType();
+
+    print('check login, loginState: ' + loginState);
+
+    switch (loginState) {
+      case 'googleplus':
+        await signInWithGoogle();
+        return Future.value(true);
+
+      case 'facebook':
+        await signInWithFacebook();
+        return Future.value(true);
+
+      case 'twitter':
+        await signInWithTwitter();
+        return Future.value(true);
+
+      default:
+        return Future.value(false);
+    }
   }
 
   static String userId() {
@@ -123,11 +149,10 @@ class AuthenticatorService {
     }
   }
 
-  static Future<dynamic> signInWithTwitter(
-      String consumerKey, String consumerSecret) async {
+  static Future<dynamic> signInWithTwitter() async {
     twitterLogin = new TwitterLogin(
-      consumerKey: consumerKey,
-      consumerSecret: consumerSecret,
+      consumerKey: AuthenticatorStore.twitterConsumerKey,
+      consumerSecret: AuthenticatorStore.twitterConsumerSecret,
     );
 
     TwitterSession currentSession = await twitterLogin.currentSession;
