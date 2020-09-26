@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_login/authenticator/AuthenticatorStore.dart';
 import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
 import 'package:flutter_firebase_login/src/AuthService.dart';
 
 class LoginPage extends StatefulWidget {
-  final bool googleEnabled;
-  final bool facebookEnabled;
-  final bool twitterEnabled;
-
   final Function loginComplete;
   final Function loginError;
 
   LoginPage({
     Key key,
-    @required this.googleEnabled,
-    @required this.facebookEnabled,
-    @required this.twitterEnabled,
     @required this.loginComplete,
     @required this.loginError,
   }) : super(key: key);
@@ -151,7 +145,7 @@ class LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      if (widget.googleEnabled)
+                      if (AuthenticatorStore.googleEnabled)
                         ..._loginButton(
                           'Google',
                           'assets/images/google.png',
@@ -159,7 +153,7 @@ class LoginPageState extends State<LoginPage> {
                           Colors.white,
                           _googleLogin,
                         ),
-                      if (widget.facebookEnabled)
+                      if (AuthenticatorStore.facebookEnabled)
                         ..._loginButton(
                           'Facebook',
                           'assets/images/facebook.png',
@@ -167,7 +161,7 @@ class LoginPageState extends State<LoginPage> {
                           Color.fromRGBO(58, 89, 152, 1.0),
                           _facebookLogin,
                         ),
-                      if (widget.twitterEnabled)
+                      if (AuthenticatorStore.twitterEnabled)
                         ..._loginButton(
                           'Twitter',
                           'assets/images/twitter.png',

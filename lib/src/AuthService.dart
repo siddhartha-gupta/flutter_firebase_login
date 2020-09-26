@@ -1,15 +1,25 @@
-import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
 import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
+import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
+import 'package:flutter_firebase_login/authenticator/AuthenticatorStore.dart';
 
 class AuthService {
   static Future<bool> initialize(
+    bool googleEnabled,
+    bool facebookEnabled,
+    bool twitterEnabled,
     String twitterConsumerKey,
     String twitterConsumerSecret,
   ) async {
     await SharedPreferencesService.isReady();
     print('SharedPreferencesService is ready');
 
-    AuthenticatorService.initialize(twitterConsumerKey, twitterConsumerSecret);
+    AuthenticatorStore.initialize(
+      googleEnabled,
+      facebookEnabled,
+      twitterEnabled,
+      twitterConsumerKey,
+      twitterConsumerSecret,
+    );
 
     return AuthenticatorService.checkLogin();
   }

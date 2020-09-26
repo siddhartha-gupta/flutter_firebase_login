@@ -4,12 +4,21 @@ class AuthenticatorStore {
   static String _authType;
   static String twitterConsumerKey;
   static String twitterConsumerSecret;
+  static bool googleEnabled;
+  static bool facebookEnabled;
+  static bool twitterEnabled;
 
   static void initialize(
+    bool googleEnabled,
+    bool facebookEnabled,
+    bool twitterEnabled,
     String twitterConsumerKey,
     String twitterConsumerSecret,
   ) {
     setAuthType(SharedPreferencesService.getString('loginState') ?? '');
+    AuthenticatorStore.googleEnabled = googleEnabled;
+    AuthenticatorStore.facebookEnabled = facebookEnabled;
+    AuthenticatorStore.twitterEnabled = twitterEnabled;
     AuthenticatorStore.twitterConsumerKey = twitterConsumerKey;
     AuthenticatorStore.twitterConsumerSecret = twitterConsumerSecret;
   }

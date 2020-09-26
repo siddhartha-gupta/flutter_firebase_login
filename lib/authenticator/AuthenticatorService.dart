@@ -13,13 +13,6 @@ class AuthenticatorService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static FirebaseUser _firebaseUser;
 
-  static void initialize(
-    String twitterConsumerKey,
-    String twitterConsumerSecret,
-  ) {
-    AuthenticatorStore.initialize(twitterConsumerKey, twitterConsumerSecret);
-  }
-
   static Future<bool> checkLogin() async {
     final String loginState = getAuthType();
 
