@@ -140,7 +140,7 @@ class LoginPageState extends State<LoginPage> {
       body: new Builder(
         builder: (BuildContext context) {
           return _loginInProgress
-              ? new LoadingIndicator()
+              ? new LoadingIndicatorWidget()
               : new Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
