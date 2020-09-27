@@ -9,6 +9,7 @@ class AuthenticatorService {
   static final GoogleSignIn _googleSignIn = new GoogleSignIn();
   static final FacebookLogin facebookSignIn = new FacebookLogin();
   static TwitterLogin twitterLogin;
+  static String accessToken;
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static FirebaseUser _firebaseUser;
@@ -44,6 +45,10 @@ class AuthenticatorService {
     return AuthenticatorStore.getAuthType();
   }
 
+  static String getAccessToken() {
+    return accessToken;
+  }
+
   static Future<dynamic> signInWithGoogle() async {
     // Attempt to get the currently authenticated user
 
@@ -62,6 +67,7 @@ class AuthenticatorService {
     final GoogleSignInAuthentication googleAuth =
         await currentUser.authentication;
 
+    accessToken = googleAuth.accessToken;
     // Authenticate with firebase
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
@@ -123,6 +129,8 @@ class AuthenticatorService {
 
   static Future<dynamic> firebaseFacebookAuth(
       CustomFacebookSession facebookSession) async {
+    accessToken = facebookSession.token;
+
     // Authenticate with firebase
     final AuthCredential credential = FacebookAuthProvider.getCredential(
       accessToken: facebookSession.token,
@@ -188,6 +196,9 @@ class AuthenticatorService {
   static Future<dynamic> firebaseTwitterAuth(
     CustomTwitterSession twitterSession,
   ) async {
+    accessToken = twitterSession.token;
+
+    // Authenticate with firebase
     final AuthCredential credential = TwitterAuthProvider.getCredential(
       authToken: twitterSession.token,
       authTokenSecret: twitterSession.secret,

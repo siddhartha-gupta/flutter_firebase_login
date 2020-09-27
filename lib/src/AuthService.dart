@@ -32,6 +32,10 @@ class AuthService {
     return AuthenticatorService.userId();
   }
 
+  static String getAccessToken() {
+    return AuthenticatorService.getAccessToken();
+  }
+
   static Future<dynamic> signInWithGoogle() async {
     return AuthenticatorService.signInWithGoogle();
   }
