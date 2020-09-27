@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_shared_codebase/flutter_shared_codebase.dart';
 import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
 import 'package:flutter_firebase_login/authenticator/AuthenticatorStore.dart';
@@ -10,6 +11,7 @@ class AuthService {
     String twitterConsumerKey,
     String twitterConsumerSecret,
   ) async {
+    await Firebase.initializeApp();
     await SharedPreferencesService.isReady();
     print('SharedPreferencesService is ready');
 
