@@ -69,7 +69,7 @@ class AuthenticatorService {
 
     accessToken = googleAuth.accessToken;
     // Authenticate with firebase
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
