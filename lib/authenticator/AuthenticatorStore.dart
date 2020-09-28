@@ -17,7 +17,7 @@ class AuthenticatorStore {
   ) async {
     var authType = await LocalStorageService.getItem('loginState');
 
-    await setAuthType(authType ?? '');
+    _authType = authType ?? '';
     AuthenticatorStore.googleEnabled = googleEnabled;
     AuthenticatorStore.facebookEnabled = facebookEnabled;
     AuthenticatorStore.twitterEnabled = twitterEnabled;
