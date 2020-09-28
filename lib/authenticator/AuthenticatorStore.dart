@@ -15,9 +15,11 @@ class AuthenticatorStore {
     String twitterConsumerKey,
     String twitterConsumerSecret,
   ) async {
-    var authType = await LocalStorageService.getItem('loginState');
+    await SharedPreferencesService.isReady();
+    print('SharedPreferencesService is ready');
 
-    _authType = authType ?? '';
+    setAuthType(SharedPreferencesService.getString('loginState') ?? '');
+
     AuthenticatorStore.googleEnabled = googleEnabled;
     AuthenticatorStore.facebookEnabled = facebookEnabled;
     AuthenticatorStore.twitterEnabled = twitterEnabled;
@@ -25,11 +27,11 @@ class AuthenticatorStore {
     AuthenticatorStore.twitterConsumerSecret = twitterConsumerSecret;
   }
 
-  static Future<void> setAuthType(final String authType) async {
+  static void setAuthType(final String authType) async {
     if (authType == '') {
-      await LocalStorageService.deleteItem('loginState');
+      SharedPreferencesService.deleteItem('loginState');
     } else {
-      await LocalStorageService.setItem('loginState', authType);
+      SharedPreferencesService.setString('loginState', authType);
     }
     _authType = authType;
   }

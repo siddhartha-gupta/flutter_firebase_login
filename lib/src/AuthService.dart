@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_firebase_login/authenticator/AuthenticatorService.dart';
 import 'package:flutter_firebase_login/authenticator/AuthenticatorStore.dart';
 
@@ -10,8 +9,6 @@ class AuthService {
     String twitterConsumerKey,
     String twitterConsumerSecret,
   ) async {
-    await Firebase.initializeApp();
-
     await AuthenticatorStore.initialize(
       googleEnabled,
       facebookEnabled,

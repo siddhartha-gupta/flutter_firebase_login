@@ -12,7 +12,7 @@ class AuthenticatorService {
   static String accessToken;
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static User _firebaseUser;
+  static FirebaseUser _firebaseUser;
 
   static Future<bool> checkLogin() async {
     final String loginState = getAuthType();
@@ -69,7 +69,7 @@ class AuthenticatorService {
 
     accessToken = googleAuth.accessToken;
     // Authenticate with firebase
-    final AuthCredential credential = GoogleAuthProvider.credential(
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
@@ -132,11 +132,11 @@ class AuthenticatorService {
     accessToken = facebookSession.token;
 
     // Authenticate with firebase
-    final OAuthCredential credential =
-        FacebookAuthProvider.credential(facebookSession.token);
+    final AuthCredential credential =
+        FacebookAuthProvider.getCredential(accessToken: facebookSession.token);
 
     try {
-      UserCredential authResult = await _auth.signInWithCredential(credential);
+      AuthResult authResult = await _auth.signInWithCredential(credential);
       _firebaseUser = authResult.user;
       print("signed in " + _firebaseUser.displayName);
       return 'LoggedIn';
@@ -198,13 +198,13 @@ class AuthenticatorService {
     accessToken = twitterSession.token;
 
     // Authenticate with firebase
-    final AuthCredential credential = TwitterAuthProvider.credential(
-      accessToken: twitterSession.token,
-      secret: twitterSession.secret,
+    final AuthCredential credential = TwitterAuthProvider.getCredential(
+      authToken: twitterSession.token,
+      authTokenSecret: twitterSession.secret,
     );
 
     try {
-      UserCredential authResult = await _auth.signInWithCredential(credential);
+      AuthResult authResult = await _auth.signInWithCredential(credential);
 
       _firebaseUser = authResult.user;
 
