@@ -8,7 +8,7 @@ class AuthenticatorStore {
   static bool facebookEnabled;
   static bool twitterEnabled;
 
-  static void initialize(
+  static Future<void> initialize(
     bool googleEnabled,
     bool facebookEnabled,
     bool twitterEnabled,
@@ -16,6 +16,7 @@ class AuthenticatorStore {
     String twitterConsumerSecret,
   ) async {
     var authType = await LocalStorageService.getItem('loginState');
+
     await setAuthType(authType ?? '');
     AuthenticatorStore.googleEnabled = googleEnabled;
     AuthenticatorStore.facebookEnabled = facebookEnabled;

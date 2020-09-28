@@ -12,7 +12,7 @@ class AuthService {
   ) async {
     await Firebase.initializeApp();
 
-    AuthenticatorStore.initialize(
+    await AuthenticatorStore.initialize(
       googleEnabled,
       facebookEnabled,
       twitterEnabled,
